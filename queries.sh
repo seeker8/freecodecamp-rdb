@@ -17,16 +17,16 @@ echo -e "\nAverage number of goals in all games from the winning teams rounded t
 echo "$($PSQL "SELECT ROUND(AVG(winner_goals), 2) FROM games")"
 
 echo -e "\nAverage number of goals in all games from both teams:"
-echo "$($PSQL "SELECT AVG(SUM(winner_goals) + SUM(opponent_goals)) FROM games")"
+echo "$($PSQL "SELECT AVG(winner_goals) + AVG(opponent_goals) FROM games")"
 
 echo -e "\nMost goals scored in a single game by one team:"
-echo
+echo "$($PSQL "SELECT MAX(winner_goals) FROM games")"
 
 echo -e "\nNumber of games where the winning team scored more than two goals:"
-echo
+echo "$($PSQL "select count(*) from games where winner_goals > 2")"
 
 echo -e "\nWinner of the 2018 tournament team name:"
-echo
+echo "$($PSQL "select name from games inner join teams on winner_id = team_id where year=2018 and round='Final'")"
 
 echo -e "\nList of teams who played in the 2014 'Eighth-Final' round:"
 echo

@@ -4,8 +4,7 @@ PSQL="psql -X -U freecodecamp -d number_guess -Atc"
 NUMBER_TO_GUESS=$(($RANDOM % 1000 + 1))
 MAX_USERNAME_LENGTH=22
 
-echo "Enter your username:"
-read USERNAME
+read -p "Enter your username: " USERNAME
 
 USERNAME_LENGTH=${#USERNAME}
 if [[ $USERNAME_LENGTH -le $MAX_USERNAME_LENGTH ]]
@@ -28,24 +27,21 @@ then
     echo "Welcome, $USERNAME! It looks like this is your first time here."
   fi
 
-  echo "Guess the secret number between 1 and 1000:"
-  read GUESSED_NUMBER
+  read -p "Guess the secret number between 1 and 1000: " GUESSED_NUMBER
   GUESSES=1
+  
   while [[ $GUESSED_NUMBER -ne $NUMBER_TO_GUESS ]]
   do
     GUESSES=$(($GUESSES + 1))
     if [[ ! $GUESSED_NUMBER =~ ^[0-9]+$ ]]
     then
-      echo "That is not an integer, guess again:"
-      read GUESSED_NUMBER 
+      read -p "That is not an integer, guess again: " GUESSED_NUMBER 
     elif [[ $GUESSED_NUMBER -lt $NUMBER_TO_GUESS ]]
     then
-      echo "It's higher than that, guess again:"
-      read GUESSED_NUMBER
+      read -p "It's higher than that, guess again: " GUESSED_NUMBER
     elif [[ $GUESSED_NUMBER -gt $NUMBER_TO_GUESS ]]
     then
-      echo "It's lower than that, guess again:"
-      read GUESSED_NUMBER
+      read -p "It's lower than that, guess again: " GUESSED_NUMBER
     fi
   done
   INSERT_GAME_RESULT=$($PSQL "insert into games (user_id, number_guesses) values('$USER_ID', $GUESSES)")

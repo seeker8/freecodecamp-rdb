@@ -25,8 +25,7 @@ MAIN_MENU(){
     MAIN_MENU "I could not find that service. What would you like today?"
   else
 
-    echo -e "\nWhat's your phone number?"
-    read CUSTOMER_PHONE
+    read -p $'\nWhat\'s your phone number? ' CUSTOMER_PHONE
 
     CUSTOMER_INFO=$($PSQL "select customer_id, name from customers where phone='$CUSTOMER_PHONE'")
     
@@ -36,10 +35,9 @@ MAIN_MENU(){
 
     if [[ -z $CUSTOMER_INFO ]]
     then
-      echo -e "\nI don't have a record for that phone number, what's your name?"
-      read CUSTOMER_NAME
+      read -p $'\nI don\'t have a record for that phone number, what\'s your name? ' CUSTOMER_NAME
       # if not empty
-      if [[ ! -z $CUSTOMER_NAME ]]
+      if [[ -n $CUSTOMER_NAME ]]
       then
         # insert new customer into customers
         INSERT_RESULT=$($PSQL "insert into customers(name, phone) values ('$CUSTOMER_NAME', '$CUSTOMER_PHONE')")
@@ -48,10 +46,10 @@ MAIN_MENU(){
       fi
     fi
 
-    echo -e "\nWhat time would you like your $SERVICE_NAME, $CUSTOMER_NAME?"
-    read SERVICE_TIME
+    read -p $'\nWhat time would you like your $SERVICE_NAME, $CUSTOMER_NAME? ' SERVICE_TIME
 
-    if [[ ! -z $SERVICE_TIME ]]
+    # if not empty 
+    if [[ -n $SERVICE_TIME ]]
     then
       SERVICE_INSERT_RESULT=$($PSQL "insert into appointments (time, customer_id, service_id) values ('$SERVICE_TIME', $CUSTOMER_ID, $SERVICE_ID_SELECTED)")
       echo "I have put you down for a $SERVICE_NAME at $SERVICE_TIME, $CUSTOMER_NAME."
